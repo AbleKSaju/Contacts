@@ -1,32 +1,41 @@
-import React, { useState } from 'react'
-import AllContact from './AllContact'
-import AddContact from './AddContact'
-import { Link, Route, Routes } from 'react-router-dom'
+import React, { useState } from "react";
+import AllContact from "./AllContact";
+import AddContact from "./AddContact";
+import { Route, Routes } from "react-router-dom";
+import Links from "./Links";
 const Navbar = () => {
+  const [contact, setContact] = useState([]);
+  const newContact = (data) => {
+    setContact([...contact, data]);
+  };
+  const deleteContact = (id) => {
+    setContact(
+      contact.filter((val) => {
+        return val.id !== id;
+      })
+    );
+  };
+
   return (
     <div className="container mt-5">
-    <nav className="navbar navbar-light bg-light">
-      <form className="container-fluid justify-content-start">
-        <button className="btn btn-outline-success me-2" type="button">
-            <Link style={{textDecoration:'none', color:'black'}} to='/'>All Contacts</Link>
-        </button>
-        <button className="btn btn-outline-success me-2" type="button" >
-            <Link style={{textDecoration:'none', color:'black'}} to='/addContacts'>Add Contacts</Link>
-
-        </button>
-        <button className="btn btn-outline-success me-2" type="button">
-        <Link style={{textDecoration:'none', color:'black'}} to='/favorites'>Favorites</Link>
-        </button>
-      </form>
-    </nav>
-    <div className="container">
+      <Links />
+      <div className="container">
         <Routes>
-            <Route path='/' element={<AllContact/>}></Route>
-            <Route path='/addContacts'element={<AddContact/>}></Route>
+          <Route
+            exact
+            path="/"
+            element={
+              <AllContact contact={contact} deleteContact={deleteContact} />
+            }
+          ></Route>
+          <Route
+            path="/addContacts"
+            element={<AddContact newContact={newContact} />}
+          ></Route>
         </Routes>
+      </div>
     </div>
-  </div>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;
