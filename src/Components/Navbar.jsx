@@ -3,6 +3,7 @@ import AllContact from "./AllContact";
 import AddContact from "./AddContact";
 import { Route, Routes } from "react-router-dom";
 import Links from "./Links";
+import AllFavorites from "./AllFavorites";
 const Navbar = () => {
   const [contact, setContact] = useState([]);
   const newContact = (data) => {
@@ -15,6 +16,16 @@ const Navbar = () => {
       })
     );
   };
+  const addFavorite = (id) => {
+    const contacts = [...contact];
+    contacts.filter((val) => {
+      if (val.id === id) {
+        val.fav = !val.fav;
+      }
+    });
+    setContact(contacts);
+  };
+  console.log(contact);
 
   return (
     <div className="container mt-5">
@@ -25,12 +36,26 @@ const Navbar = () => {
             exact
             path="/"
             element={
-              <AllContact contact={contact} deleteContact={deleteContact} />
+              <AllContact
+                contact={contact}
+                deleteContact={deleteContact}
+                addFavorite={addFavorite}
+              />
             }
           ></Route>
           <Route
             path="/addContacts"
             element={<AddContact newContact={newContact} />}
+          ></Route>
+          <Route
+            path="/favorites"
+            element={
+              <AllFavorites
+                contact={contact}
+                deleteContact={deleteContact}
+                addFavorite={addFavorite}
+              />
+            }
           ></Route>
         </Routes>
       </div>
